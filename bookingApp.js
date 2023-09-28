@@ -8,7 +8,7 @@ var itemList = document.getElementById('users');
 
 
 window.addEventListener("DOMContentLoaded", () =>{
-    axios.get("https://crudcrud.com/api/482a332d4bb846c28f697dfb0a518dd5/appointmentData")
+    axios.get("https://crudcrud.com/api/b7e154e08b92490d9096d42b7909433d/appointmentData")
         .then((response)=>{
             console.log(response)
             for(var i=0;i<response.data.length;i++)
@@ -27,6 +27,7 @@ function userData(user)
     // var name = document.getElementById('name').value;
     // //console.log(name1);
     // var email = document.getElementById('email').value;
+    var id = user._id
     var combinedName = user.name+" "+user.email+" ";
     var li = document.createElement('li');
     var deleteBtn = document.createElement('button');
@@ -40,6 +41,8 @@ function userData(user)
     li.appendChild(document.createTextNode(combinedName));
     li.appendChild(editBtn);
     li.appendChild(deleteBtn);
+    li.appendChild(document.createTextNode(" "))
+    li.appendChild(document.createTextNode(id));
     itemList.appendChild(li);
 }
 
@@ -55,7 +58,7 @@ function submit(e){
         email
     }
 
-    axios.post("https://crudcrud.com/api/482a332d4bb846c28f697dfb0a518dd5/appointmentData",obj)
+    axios.post("https://crudcrud.com/api/b7e154e08b92490d9096d42b7909433d/appointmentData",obj)
         .then((response)=>{
             console.log(response)
         })
@@ -63,7 +66,7 @@ function submit(e){
             console.log(err)
         })
 
-
+    
     var combinedName = name+" "+email+" ";
     var itemList = document.getElementById('users');
     itemList.addEventListener('click', removeItem);
@@ -145,21 +148,46 @@ function submit(e){
         if(e.target.classList.contains('delete'))
             {
                 var li = e.target.parentElement;
-                itemList.removeChild(li);  
-
-                var email = li.textContent.split(' ')[1]; // Extract the email from the list item text
-                console.log(email)
-                var formData = JSON.parse(localStorage.getItem('formData')) || [];
-
-                // Find the item in the array with the matching email
-                var itemIndex = formData.findIndex(item => item.email === email);
-                    console.log(itemIndex)
-                if (itemIndex !== -1) {
-                    console.log("yes")
-                    formData.splice(itemIndex,1); // Remove the item from the array
-                    localStorage.setItem('formData', JSON.stringify(formData)); // Update the localStorage
+                itemList.removeChild(li);  //this is to remove the item from list
+                //console.log(li.textContent)
+                var textArray = li.textContent.split(" ");
+                var id;
+                for(var i=0;i<textArray.length;i++)
+                {
+                    if(i==textArray.length-1)
+                    {
+                        id=textArray[i]
+                    }
                 }
+                
+                var apiUrl = "https://crudcrud.com/api/b7e154e08b92490d9096d42b7909433d/appointmentData/";
 
+                // Append the 'id' to the URL
+                var deleteUrl = apiUrl + id;
+
+                axios.delete(deleteUrl)
+                .then((response)=>{
+                    console.log(response)
+                })
+                .catch((err)=>{
+                    console.log(err)
+                }) 
+
+
+                //for local storage use this code
+                // var email = li.textContent.split(' ')[1]; // Extract the email from the list item text
+                // console.log(email)
+                // var formData = JSON.parse(localStorage.getItem('formData')) || [];
+
+                // // Find the item in the array with the matching email
+                // var itemIndex = formData.findIndex(item => item.email === email);
+                //     console.log(itemIndex)
+                // if (itemIndex !== -1) {
+                //     console.log("yes")
+                //     formData.splice(itemIndex,1); // Remove the item from the array
+                //     localStorage.setItem('formData', JSON.stringify(formData)); // Update the localStorage
+                // }
+                //for local storage use this code
                 
             }
     }
