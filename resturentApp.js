@@ -1,14 +1,14 @@
 var form = document.getElementById('my-form');
 form.addEventListener('submit',submit);
 var itemList1 = document.getElementById('table 1');
-    itemList1.addEventListener('click', deleteOrder);
-var itemList2 = document.getElementById('table 1');
-    itemList2.addEventListener('click', deleteOrder);
-var itemList3 = document.getElementById('table 1');
-    itemList3.addEventListener('click', deleteOrder);
+    //itemList1.addEventListener('click', deleteOrder);
+var itemList2 = document.getElementById('table 2');
+    //itemList2.addEventListener('click', deleteOrder);
+var itemList3 = document.getElementById('table 3');
+    //itemList3.addEventListener('click', deleteOrder);
 
 window.addEventListener("DOMContentLoaded",()=>{
-    axios.get("https://crudcrud.com/api/ecb4e7578ac04f64804df3a4695db911/resturentData")
+    axios.get("https://crudcrud.com/api/51aa48759ab14692a7726c63a3f3e57c/resturentData")
     .then((response)=>{
         console.log(response)
         for(var i=0;i<response.data.length;i++)
@@ -101,7 +101,7 @@ function submit(e){
         dish,
         table
     }
-    axios.post("https://crudcrud.com/api/ecb4e7578ac04f64804df3a4695db911/resturentData",obj)
+    axios.post("https://crudcrud.com/api/51aa48759ab14692a7726c63a3f3e57c/resturentData",obj)
     .then((response)=>{
         console.log(response);
         userData(response.data)
@@ -182,19 +182,20 @@ function deleteOrder(e){
     {
         var li = e.target.parentElement;
         //itemList.removeChild(li);  //this is to remove the item from list
-
+        console.log(itemList1)
+        console.log(li)
         var textArray = li.textContent.split(" ");
             var id;
             for(var i=0;i<textArray.length;i++)
             {
-                if(i==3 && textArray=="table1"){
+                if(textArray[i]=="table1"){
                     itemList1.removeChild(li);
                     console.log(textArray) 
                 }
-                if(i==3 && textArray=="table2"){
+                if(textArray[i]=="table2"){
                     itemList2.removeChild(li); 
                 }
-                if(i==3 && textArray=="table3"){
+                if(textArray[i]=="table3"){
                     itemList3.removeChild(li); 
                 }
 
@@ -203,7 +204,7 @@ function deleteOrder(e){
                     id=textArray[i]
                 }
             }
-        var apiUrl = "https://crudcrud.com/api/ecb4e7578ac04f64804df3a4695db911/resturentData/";
+        var apiUrl = "https://crudcrud.com/api/51aa48759ab14692a7726c63a3f3e57c/resturentData/";
 
         // Append the 'id' to the URL
         var deleteUrl = apiUrl + id;
